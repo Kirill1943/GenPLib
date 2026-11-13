@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+
+[project]
+name = "genplib"
+version = "0.0.0.a1"
+description = "CLI-утилита для создания Python библиотеки"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "kirill1943" }
+]
+dependencies = ["Typer"]
+
+[project.scripts]
+genplib = "genplib.cli:run"

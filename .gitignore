@@ -1,3 +1,11 @@
 # python cache
 *.pyc
-pycache/
+__pycache__/
+
+# build / install cache
+*.egg-info/
+build/
+
+# IDE settings
+.vscode/
+.idea/
