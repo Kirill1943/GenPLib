@@ -9,3 +9,6 @@ build/
 # IDE settings
 .vscode/
 .idea/
+
+# tests genplib dir
+sandbox/
