@@ -1,8 +1,11 @@
 import typer
-from genplib.modules import init as lib_init
+import tomlkit
+from genplib.modules import init as lib_init, set_parameters as set
 import os
 
 app = typer.Typer()
+app_set = typer.Typer()
+app.add_typer(app_set, name="set")
 
 @app.callback(invoke_without_command=True)
 def main():
@@ -40,6 +43,22 @@ def init() -> None:
             lib_init.init_workspace('.', name)
     else:
         lib_init.init_workspace('.', name)
+
+@app_set.command()
+def name(
+    name_: str
+):
+    pyproject_pth = os.path.join('.', 'pyproject.toml')
+    if os.path.exists(pyproject_pth):
+        with open(pyproject_pth, "r+", encoding="utf-8") as f:
+            document = tomlkit.load(f)
+            old_name = document.get("project", {})["name"]
+            set.set(document, 'project', 'name', name_)
+            f.seek(0)
+            f.write("")
+            tomlkit.dump(document, f)
+    if os.path.exists(os.path.join('.', old_name)):
+        os.rename(os.path.join('.', old_name), os.path.join('.', name_))
 
 def fallback():
     print("ERROR: Вы ввели несуществующую команду")
