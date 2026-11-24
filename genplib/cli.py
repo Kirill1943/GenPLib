@@ -1,6 +1,7 @@
 import typer
 import tomlkit
 from genplib.modules import init as lib_init, set_parameters as set_params
+from genplib.help import show_help
 import os
 
 app = typer.Typer()
@@ -11,11 +12,11 @@ app.add_typer(app_set, name="set")
 app_set.add_typer(app_set_dependencies, name="dependencies")
 
 @app.callback(invoke_without_command=True)
-def callback_main(): pass
 @app_set.callback(invoke_without_command=True)
-def callback_set(): pass
 @app_set_dependencies.callback(invoke_without_command=True)
-def callback_set_dependencies(): pass
+def callback(ctx: typer.Context):
+    if ctx.invoked_subcommand is None:
+        show_help()
 
 @app.command()
 def init() -> None:
@@ -54,6 +55,10 @@ def init() -> None:
             lib_init.init_workspace('.', name, readme)
     else:
         lib_init.init_workspace('.', name, readme)
+
+@app.command()
+def help():
+    show_help()
 
 @app_set.command()
 def name(
